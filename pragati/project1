@@ -1,0 +1,30 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# Data
+data = {
+    'Hours': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    'Marks': [10, 20, 30, 40, 50, 60, 70, 80, 90]
+}
+df = pd.DataFrame(data)
+
+# Train model
+X = df[['Hours']]
+y = df['Marks']
+model = LinearRegression()
+model.fit(X, y)
+
+# 🔮 Predict for 10 hours (yeh sabse important part hai!)
+hours = 10
+predicted_marks = model.predict([[10]])
+print(f"{10}: {predicted_marks[0]:.2f}")
+
+# 📈 Graph show karo
+plt.scatter(X, y, color='blue')
+plt.plot(X, model.predict(X), color='red')  # Regression line
+plt.title("Hours vs Marks")
+plt.xlabel("Hours Studied")
+plt.ylabel("Marks Scored")
+plt.grid(True)
+plt.show()

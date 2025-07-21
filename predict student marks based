@@ -1,0 +1,49 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+#step1:- data
+data={
+    'hours':[1,2,3,4,5,6,7,8,9,10],
+    'marks':[10,20,35,45,50,65,75,85,90,99]
+}
+df= pd.DataFrame(data)
+
+#step2:-visualization
+plt.scatter(df['hours'],df['marks'],color='blue')
+plt.title('hours vs marks')
+plt.xlabel('study hours')
+plt.ylabel('marks')
+plt.show()
+
+#step3:-Data aplit
+x = df[['hours']]
+y = df['marks']
+
+x_train,x_test,y_train,y_test = train_test_split(x,y, test_size=0.2,random_state=42)
+
+#step4:-model train
+model = LinearRegression()
+model = fit(x_train, y_train)
+
+#step5:-prediction
+y_pred = model.predict(x_test)
+
+result = pd.DataFrame({'Actual':y_test,'predicted':y_pred})
+print(result)
+
+#step6:- Graph
+
+plt.scatter(x_test,y_test,color='green',label='Actual marks')
+plt.plot(x_test,y_pred,color='red',linewidth=2,label='prediction line')
+plt.title('Actual vs predicted marks')
+plt.xlabel('hours studied')
+plt.ylabel('marks')
+plt.legend()
+plt.show()
+
+#step7;- future prediction
+hours = [[9.5]]
+predicted_marks = model.predict(hours)
+print(f"{predicted_marks[0]:.2f}") 

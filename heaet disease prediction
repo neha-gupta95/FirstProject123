@@ -1,0 +1,48 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.metrics import confusion_matrix, classification_report
+
+# Step 1: Load the Dataset
+# You can replace the path with your actual dataset path
+df = pd.read_csv("heart_sample (1).csv")  # Example CSV file name
+
+# Step 2: Explore the data (optional)
+print(df.head())
+print(df['target'].value_counts())  # 1 = heart disease, 0 = no heart disease
+
+# Step 3: Split into Features and Target
+X = df.drop('target', axis=1)
+y = df['target']
+
+# Step 4: Train-Test Split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Step 5: Feature Scaling (Important for SVM)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# -------------------------
+# ✅ Model 1: Logistic Regression
+# -------------------------
+print("\n--- Logistic Regression ---")
+log_model = LogisticRegression()
+log_model.fit(X_train, y_train)
+y_pred_log = log_model.predict(X_test)
+
+print(confusion_matrix(y_test, y_pred_log))
+print(classification_report(y_test, y_pred_log))
+
+# -------------------------
+# ✅ Model 2: SVM
+# -------------------------
+print("\n--- Support Vector Machine ---")
+svm_model = SVC(kernel='linear')
+svm_model.fit(X_train, y_train)
+y_pred_svm = svm_model.predict(X_test)
+
+print(confusion_matrix(y_test, y_pred_svm))
+print(classification_report(y_test, y_pred_svm))
